@@ -2,23 +2,76 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>ESP32 Sniffer Project</title>
+	<title>MonadCount</title>
 	<!-- Bootstrap CSS via CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 	<!-- Custom Styles -->
 	<link rel="stylesheet" href="/static/css/styles.css">
+	<style>
+		:root {
+			--bs-primary: #00A9E0; /* Set primary color to #00A9E0 */
+		}
+	</style>
 </head>
 <body>
-<div class="container">
-	<h1 class="mt-5">ESP32 Sniffer Project</h1>
+<!-- Top Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+	<div class="container-fluid">
+		<!-- Placeholder for Logo -->
+		<a class="navbar-brand" href="#">
+			MonadCount
+		</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+						aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<!-- Navigation Links -->
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ms-auto">
+				<!-- Future participation option -->
+				<li class="nav-item">
+					<a class="nav-link disabled" href="#">Participate</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<!-- Main Content -->
+<div class="container mt-5">
+	<h1 class="mb-4">Welcome to MonadCount</h1>
 	<p class="lead">
-		Welcome to the ESP32 Sniffer Project server. This server receives data from ESP32 devices and stores it for analysis.
+		Elevating the simple act of counting to a new philosophical dimension.
 	</p>
 	<p>
-		More content will be added here in the future.
+		<strong>MonadCount</strong> is not just another counting app—it's a project that infuses the mundane with a touch of philosophy. Inspired by the concept of <em>monads</em> from the 17th-century philosopher <strong>Gottfried Wilhelm Leibniz</strong>, we aim to transform individual units into a collective understanding of human behavior.
 	</p>
+	<p>
+		In Leibniz's philosophy, monads are the fundamental, indivisible units that make up the universe. Similarly, each count in MonadCount represents an individual—a unique entity contributing to a larger pattern. By capturing these individual units, we can gain insights into crowd behavior and movement within spaces.
+	</p>
+	<p>
+		At its core, MonadCount is about people counting. But it's more than just tallying numbers; it's about recognizing each person as a significant part of a larger whole. With our technology—including ESP32 devices acting as sniffers to collect data—we're able to gather information that contributes to a deeper understanding of how people interact with their environment.
+	</p>
+	<p>
+		This project is open-source and welcomes contributions:
+	<ul>
+		<li><a href="https://github.com/Sibyx/monadcount-sniffer" target="_blank">monadcount-sniffer</a> - ESP32 firmware for data collection</li>
+		<li><a href="https://github.com/Sibyx/monadcount-api" target="_blank">monadcount-api</a> - API server and web interface</li>
+	</ul>
+	</p>
+	<p>
+		<strong>MonadCount</strong> is part of a thesis project at the Faculty of Informatics and Information Technology, Slovak University of Technology in Bratislava. The aim is to explore innovative ways of collecting and analyzing data to understand human patterns and behaviors.
+	</p>
+	<p>
+		Stay tuned for more updates, including opportunities to participate in the project. For now, feel free to explore our repositories and contribute to the development of MonadCount.
+	</p>
+	<!-- Placeholder for future content -->
+	<!-- <p>Additional information about the infrastructure and participation options will be added here.</p> -->
 </div>
-<!-- Bootstrap JS via CDN (Optional if you need interactive components) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+<!-- Bootstrap JS via CDN -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Optional: Include the custom JavaScript file -->
+<!-- <script src="/static/js/main.js"></script> -->
 </body>
 </html>
