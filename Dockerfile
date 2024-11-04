@@ -7,7 +7,7 @@ RUN apt update -y && apt install -y libffi-dev build-essential libsasl2-dev libp
 WORKDIR /usr/src/app
 
 # Copy source
-COPY . .
+COPY requirements.txt requirements.txt
 
 RUN pip install -r requirements.txt --no-cache-dir && \
     pip freeze -l > packages.txt && \
@@ -30,6 +30,9 @@ RUN pip install -r requirements.txt
 WORKDIR /usr/src/app
 
 RUN rm -rf wheels
+
+COPY . .
+
 RUN date -I > BUILD.txt
 RUN mkdir /var/log/uvicorn
 
