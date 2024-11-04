@@ -641,7 +641,7 @@ files = [
 name = "pyyaml"
 version = "6.0.2"
 description = "YAML parser and emitter for Python"
-optional = false
+optional = true
 python-versions = ">=3.8"
 files = [
     {file = "PyYAML-6.0.2-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:0a9a2848a5b7feac301353437eb7d5957887edbf81d56e903999a75a3d743086"},
@@ -1005,9 +1005,9 @@ files = [
 test = ["pytest (>=6.0.0)", "setuptools (>=65)"]
 
 [extras]
-docker = ["uvloop", "wheel"]
+docker = ["pyyaml", "uvloop", "wheel"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "f444fc2ca93c427caa614c6927b78fcbb394f485d115a479a2b093c49cb6309b"
+content-hash = "4256b17e3b6c1bd4542b2e6d7acb9db024815d03f3dce48750131a6f28d1da74"
