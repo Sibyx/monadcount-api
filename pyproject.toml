@@ -20,7 +20,7 @@ jinja2 = "^3.1.4"
 sentry-sdk = "^2.17.0"
 
 [tool.poetry.group.dev.dependencies]
-black = "^24.10.0"
+black = {version = "^24.10.0", extras = ["jupyter"]}
 
 [tool.poetry.group.jupyter.dependencies]
 jupyterlab = "^4.3.0"
