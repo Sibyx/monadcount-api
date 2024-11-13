@@ -39,12 +39,12 @@ async def upload_file(
     session.commit()
 
     # Save the file
-    device_dir = os.path.join(settings.DATA_DIR, device_id.replace(":", "_"))
-    os.makedirs(device_dir, exist_ok=True)
+    dir_path = device_id.replace(":", "_")
+    os.makedirs(os.path.join(settings.DATA_DIR, dir_path), exist_ok=True)
 
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     filename = f"{timestamp}_{file_type}.bin"
-    file_path = os.path.join(device_dir, filename)
+    file_path = os.path.join(dir_path, filename)
 
     with open(file_path, "wb") as f:
         f.write(content)

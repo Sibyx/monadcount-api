@@ -17,16 +17,20 @@ geoalchemy2 = "^0.15.2"
 psycopg = {version = "^3.1.19", extras = ["c"]}
 pydantic-settings = "^2.6.1"
 jinja2 = "^3.1.4"
-wheel = { version = "^0.43.0", optional = true }
-uvloop = { version = "^0.19.0", optional = true }
 sentry-sdk = "^2.17.0"
-pyyaml = { version = "^6.0.2", optional = true }
-
-[tool.poetry.extras]
-docker = ["wheel", "uvloop", "pyyaml"]
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.10.0"
+
+[tool.poetry.group.jupyter.dependencies]
+jupyterlab = "^4.3.0"
+pandas = "^2.2.3"
+
+
+[tool.poetry.group.docker.dependencies]
+wheel = "^0.45.0"
+uvloop = "^0.21.0"
+pyyaml = "^6.0.2"
 
 [tool.black]
 line-length = 119

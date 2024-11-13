@@ -3,7 +3,7 @@ from typing import Optional, Dict, List
 from datetime import datetime
 
 from geoalchemy2 import Geometry
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, DateTime
 from sqlalchemy.orm import sessionmaker
 from sqlmodel import Field, SQLModel, JSON, Column, Relationship
 
@@ -26,7 +26,7 @@ class Device(SQLModel, table=True):
 
     mac_address: str = Field(primary_key=True)
     geom: Optional[str] = Field(sa_column=Column(Geometry(geometry_type="POINT", srid=998999)))
-    last_seen: Optional[datetime] = None
+    last_seen: Optional[datetime] = Field(sa_column=Column(DateTime(timezone=True), nullable=True))
 
     uploaded_files: List["UploadedFile"] = Relationship(back_populates="device")
 
@@ -36,7 +36,7 @@ class Measurement(SQLModel, table=True):
 
     id: Optional[int] = Field(default=None, primary_key=True)
     device_id: str = Field(foreign_key="devices.mac_address")
-    happened_at: datetime
+    happened_at: datetime = Field(sa_column=Column(DateTime(timezone=True)))
     additional_data: Optional[Dict] = Field(sa_column=Column(JSON))
 
 
