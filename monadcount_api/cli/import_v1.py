@@ -22,6 +22,8 @@ def import_v1(directory):
     captured_packet_size = struct.calcsize(captured_packet_format)
 
     db = SessionLocal()
+    COMMIT_BATCH_SIZE = 100_000
+    record_counter = 0  # Counter for tracking number of records
 
     for file_path in directory.rglob("*.bin"):
         with open(file_path, "rb") as f:
@@ -37,10 +39,10 @@ def import_v1(directory):
 
             print(f"File Header {identifier}v{version} ({wifi_mac}): {start_time}")
 
-            device = db.get(Device, wifi_mac)
-
-            if not device:
-                print(f"Unable to find Device == {wifi_mac}")
+            # device = db.get(Device, wifi_mac)
+            #
+            # if not device:
+            #     print(f"Unable to find Device == {wifi_mac}")
 
             # Read and parse each captured packet
             print("\nCaptured Packets:")
@@ -62,7 +64,7 @@ def import_v1(directory):
                     f"Packet {packet_index}: {timestamp} | {src_mac} | {dst_mac} | {rssi} | {channel} | {payload_len}"
                 )
                 measurement = Measurement(
-                    device_id=device.mac_address,
+                    device_id=wifi_mac,
                     happened_at=datetime.fromtimestamp(timestamp),
                     additional_data={
                         "source_mac": src_mac,
@@ -73,6 +75,19 @@ def import_v1(directory):
                     },
                 )
                 db.add(measurement)
-                db.commit()
+                record_counter += 1
+
+                # Commit every 100,000 records
+                if record_counter >= COMMIT_BATCH_SIZE:
+                    db.commit()
+                    record_counter = 0  # Reset counter after commit
+                    print("Committed 100,000 records to the database.")
 
                 packet_index += 1
+
+    # Final commit for any remaining records
+    if record_counter > 0:
+        db.commit()
+        print(f"Final commit of {record_counter} remaining records to the database.")
+
+    db.close()
