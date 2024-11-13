@@ -46,7 +46,7 @@ async def upload_file(
     filename = f"{timestamp}_{file_type}.bin"
     file_path = os.path.join(dir_path, filename)
 
-    with open(file_path, "wb") as f:
+    with open(os.path.join(settings.DATA_DIR, file_path), "wb") as f:
         f.write(content)
 
     # Create an UploadedFile record
