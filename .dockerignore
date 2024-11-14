@@ -4,6 +4,7 @@
 .venv/
 .stoplight/
 data/
+notebooks/
 *.DS_Store
 *.pyo
 .editorconfig

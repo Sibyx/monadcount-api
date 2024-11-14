@@ -1,7 +1,9 @@
+import json
 from enum import Enum
 from typing import Optional, Dict, List
 from datetime import datetime
 
+import pydantic
 from geoalchemy2 import Geometry
 from sqlalchemy import create_engine, DateTime
 from sqlalchemy.orm import sessionmaker
@@ -9,7 +11,15 @@ from sqlmodel import Field, SQLModel, JSON, Column, Relationship
 
 from monadcount_api.core import settings
 
-engine = create_engine(settings.database_url, echo=True)
+
+def _custom_json_serializer(*args, **kwargs) -> str:
+    """
+    Encodes json in the same way that pydantic does.
+    """
+    return json.dumps(*args, default=pydantic.json.pydantic_encoder, **kwargs)
+
+
+engine = create_engine(settings.database_url, json_serializer=_custom_json_serializer)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
