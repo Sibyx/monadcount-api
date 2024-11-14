@@ -3,7 +3,7 @@ from enum import Enum
 from typing import Optional, Dict, List
 from datetime import datetime
 
-import pydantic
+from fastapi.encoders import jsonable_encoder
 from geoalchemy2 import Geometry
 from sqlalchemy import create_engine, DateTime
 from sqlalchemy.orm import sessionmaker
@@ -14,9 +14,9 @@ from monadcount_api.core import settings
 
 def _custom_json_serializer(*args, **kwargs) -> str:
     """
-    Encodes json in the same way that pydantic does.
+    Encodes json in the same way that FastAPI does.
     """
-    return json.dumps(*args, default=pydantic.json.pydantic_encoder, **kwargs)
+    return json.dumps(*args, default=jsonable_encoder, **kwargs)
 
 
 engine = create_engine(settings.database_url, json_serializer=_custom_json_serializer)
