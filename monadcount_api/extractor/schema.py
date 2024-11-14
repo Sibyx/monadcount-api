@@ -10,4 +10,3 @@ class FileHeader(BaseModel):
     wifi_mac: str
     wifi_mac: str
     bt_mac: str
-

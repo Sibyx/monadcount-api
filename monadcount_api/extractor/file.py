@@ -22,7 +22,6 @@ class FileParser:
             start_time=payload[2],
             wifi_mac=format_mac_address(payload[3]),
             bt_mac=format_mac_address(payload[4]),
-
         )
 
     def close(self):
