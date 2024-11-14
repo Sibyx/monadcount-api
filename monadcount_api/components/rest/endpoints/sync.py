@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from pathlib import Path
 
 from fastapi import APIRouter, Depends, Header
 from sqlalchemy.orm import Session
@@ -10,6 +11,7 @@ from starlette.responses import JSONResponse
 from monadcount_api.components.rest.auth import get_current_username
 from monadcount_api.core import settings
 from monadcount_api.db import get_db, Device, UploadedFile
+from monadcount_api.extractor.file import FileParser
 
 router = APIRouter()
 
@@ -45,15 +47,21 @@ async def upload_file(
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     filename = f"{timestamp}_{file_type}.bin"
     file_path = os.path.join(dir_path, filename)
+    absolute_file_path = Path(os.path.join(settings.DATA_DIR, file_path))
 
-    with open(os.path.join(settings.DATA_DIR, file_path), "wb") as f:
+    with open(absolute_file_path, "wb") as f:
         f.write(content)
+
+    file = FileParser(absolute_file_path)
 
     # Create an UploadedFile record
     uploaded_file = UploadedFile(
         device_id=device.mac_address,
-        file_type=file_type,
+        file_type=file.header.identifier,
         file_path=file_path,
+        happened_at=file.header.start_time,
+        version=file.header.version,
+        additional_data=file.header.model_dump()
     )
     session.add(uploaded_file)
     session.commit()

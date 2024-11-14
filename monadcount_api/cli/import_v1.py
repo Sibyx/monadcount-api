@@ -4,12 +4,8 @@ from pathlib import Path
 
 import click
 
-from monadcount_api.db import SessionLocal, Device, Measurement, get_db
-
-
-def format_mac_address(mac_bytes):
-    """Format MAC address bytes into standard MAC address string format like XX:XX:XX:XX:XX:XX."""
-    return ":".join(f"{byte:02X}" for byte in mac_bytes)
+from monadcount_api.db import SessionLocal, Measurement
+from monadcount_api.extractor.helpers import format_mac_address
 
 
 @click.command()
@@ -38,11 +34,6 @@ def import_v1(directory):
             bt_mac = format_mac_address(file_header[4])
 
             print(f"File Header {identifier}v{version} ({wifi_mac}): {start_time}")
-
-            # device = db.get(Device, wifi_mac)
-            #
-            # if not device:
-            #     print(f"Unable to find Device == {wifi_mac}")
 
             # Read and parse each captured packet
             print("\nCaptured Packets:")
