@@ -11,7 +11,11 @@ import sentry_sdk
 
 if settings.SENTRY_DSN:
     sentry_sdk.init(
-        dsn=settings.SENTRY_DSN, traces_sample_rate=1.0, profiles_sample_rate=1.0, integrations=[DramatiqIntegration()]
+        dsn=settings.SENTRY_DSN,
+        traces_sample_rate=1.0,
+        profiles_sample_rate=1.0,
+        integrations=[DramatiqIntegration()],
+        release=settings.VERSION,
     )
 
 

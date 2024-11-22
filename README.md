@@ -9,7 +9,7 @@ that make up the universe.
 
 The MonadCount API Server is built using FastAPI, SQLModel, and integrates with PostgreSQL enhanced with TimescaleDB
 and PostGIS for time-series and geospatial data capabilities. It provides endpoints for ESP32 devices to upload data
-efficiently.
+efficiently. The measurements collected by ESP32 sniffers are stored inside the Clickhouse database.
 
 ## Getting Started
 

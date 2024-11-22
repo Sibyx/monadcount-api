@@ -28,7 +28,6 @@ black = {version = "^24.10.0", extras = ["jupyter"]}
 jupyterlab = "^4.3.0"
 pandas = "^2.2.3"
 
-
 [tool.poetry.group.docker.dependencies]
 wheel = "^0.45.0"
 uvloop = "^0.21.0"

@@ -20,7 +20,11 @@ dramatiq.set_broker(create_broker())
 
 if settings.SENTRY_DSN:
     sentry_sdk.init(
-        dsn=settings.SENTRY_DSN, traces_sample_rate=1.0, profiles_sample_rate=1.0, integrations=[DramatiqIntegration()]
+        dsn=settings.SENTRY_DSN,
+        traces_sample_rate=1.0,
+        profiles_sample_rate=1.0,
+        integrations=[DramatiqIntegration()],
+        release=settings.VERSION,
     )
 
 
@@ -58,7 +62,7 @@ def extractor(uploaded_file_id: int):
                         happened_at=measurement.happened_at,
                         rssi=measurement.additional_data["rssi"],
                         channel=measurement.additional_data["channel"],
-                        header=measurement.additional_data["header"],
+                        header=measurement.additional_data.get("header"),
                         payload=measurement.additional_data.get("payload"),
                     )
                 )

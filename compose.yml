@@ -100,7 +100,10 @@ services:
     volumes:
       - monad-storage:/var/monad
       - ./logs:/var/log
-    command: /usr/local/bin/python3 -m dramatiq monadcount_api.tasks:create_broker monadcount_api.tasks
+    command: /usr/local/bin/python3 -m dramatiq monadcount_api.tasks:create_broker monadcount_api.tasks --processes 5 --threads 8
+    networks:
+      intranet:
+        ipv4_address: 172.28.20.2
 
 volumes:
   timescaledb-data:
