@@ -28,7 +28,16 @@ if settings.SENTRY_DSN:
     )
 
 
-@dramatiq.actor(time_limit=600_000)
+@dramatiq.actor
+def extractor_fail(message_data, exception_data):
+    with Session(engine) as session:
+        uploaded_file: UploadedFile = session.get(UploadedFile, message_data["args"][0])
+        uploaded_file.state = UploadedFile.FileState.failed
+        session.add(uploaded_file)
+        session.commit()
+
+
+@dramatiq.actor(time_limit=settings.DRAMATIQ_TIMEOUT)
 def extractor(uploaded_file_id: int):
 
     clickhouse = clickhouse_connect.get_client(
@@ -68,7 +77,7 @@ def extractor(uploaded_file_id: int):
                 )
 
                 # Commit every batch records if not dry run
-                if record_counter >= 500_000:
+                if record_counter >= settings.CLICKHOUSE_BATCH_SIZE:
                     record_counter = 0  # Reset counter after commit
                     clickhouse.insert(
                         f"{parser.header.identifier}_v{parser.header.version}".lower(),

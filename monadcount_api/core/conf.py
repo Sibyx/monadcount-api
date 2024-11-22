@@ -32,6 +32,9 @@ class Settings(BaseSettings):
     CLICKHOUSE_PASSWORD: str
     CLICKHOUSE_HOST: str
     CLICKHOUSE_PORT: int = Field(default=8123)
+    CLICKHOUSE_BATCH_SIZE: int = Field(default=500_000)
+
+    DRAMATIQ_TIMEOUT: int = Field(default=1_200_000)
 
     def __init__(self, *args, **kwargs):
         base_dir = Path(__file__).resolve(strict=True).parent.parent.parent

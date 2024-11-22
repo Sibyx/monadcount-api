@@ -12,7 +12,7 @@ from monadcount_api.components.rest.auth import get_current_username
 from monadcount_api.core import settings
 from monadcount_api.db import get_db, Device, UploadedFile
 from monadcount_api.extractor.file import FileParser
-from monadcount_api.tasks import extractor
+from monadcount_api.tasks import extractor, extractor_fail
 
 router = APIRouter()
 
@@ -68,6 +68,6 @@ async def upload_file(
     session.commit()
     session.refresh(uploaded_file)
 
-    extractor.send(uploaded_file.id)
+    extractor.send_with_options(args=(uploaded_file.id,), on_failure=extractor_fail)
 
     return JSONResponse(content={"message": "File uploaded successfully"}, status_code=200)

@@ -2,7 +2,7 @@ import click
 from sqlmodel import select, Session
 
 from monadcount_api.db import UploadedFile, engine
-from monadcount_api.tasks import extractor
+from monadcount_api.tasks import extractor, extractor_fail
 
 
 @click.command()
@@ -12,4 +12,4 @@ def enqueue():
         results = session.exec(statement)
 
         for uploaded_file in results:
-            extractor.send(uploaded_file.id)
+            extractor.send_with_options(args=(uploaded_file.id,), on_failure=extractor_fail)
