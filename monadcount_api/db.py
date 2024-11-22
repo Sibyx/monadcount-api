@@ -41,23 +41,15 @@ class Device(SQLModel, table=True):
     uploaded_files: List["UploadedFile"] = Relationship(back_populates="device")
 
 
-class Measurement(SQLModel, table=True):
-    __tablename__ = "measurements"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    device_id: str = Field(foreign_key="devices.mac_address")
-    happened_at: datetime = Field(sa_column=Column(DateTime(timezone=True)))
-    additional_data: Optional[Dict] = Field(sa_column=Column(JSON))
-
-
 class UploadedFile(SQLModel, table=True):
     __tablename__ = "uploaded_files"
 
     class FileState(str, Enum):
         pending = "pending"
         processing = "processing"
-        processed = "processed"
+        done = "done"
         failed = "failed"
+        archived = "archived"
 
     class FileType(str, Enum):
         csip = "CSIP"
@@ -74,3 +66,16 @@ class UploadedFile(SQLModel, table=True):
     created_at: datetime = Field(sa_column=Column(DateTime(timezone=True)), default_factory=datetime.now)
 
     device: Optional[Device] = Relationship(back_populates="uploaded_files")
+    measurements: List["Measurement"] = Relationship(back_populates="uploaded_file")
+
+
+class Measurement(SQLModel, table=True):
+    __tablename__ = "measurements"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    device_id: str = Field(foreign_key="devices.mac_address")
+    uploaded_file_id: Optional[int] = Field(foreign_key="uploaded_files.id")
+    happened_at: datetime = Field(sa_column=Column(DateTime(timezone=True)))
+    additional_data: Optional[Dict] = Field(sa_column=Column(JSON))
+
+    uploaded_file: Optional[UploadedFile] = Relationship(back_populates="measurements")

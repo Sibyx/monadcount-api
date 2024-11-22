@@ -2,7 +2,7 @@ import tomllib
 from pathlib import Path
 from typing import Optional
 
-from pydantic import computed_field, Field
+from pydantic import computed_field, Field, AnyUrl
 from pydantic_settings import BaseSettings
 
 
@@ -19,10 +19,19 @@ class Settings(BaseSettings):
     BASE_DIR: Path
     DATA_DIR: Path
 
+    REDIS_URL: AnyUrl
+
     AUTH_USERNAME: str
     AUTH_PASSWORD: str
 
     SENTRY_DSN: Optional[str] = Field(default=None)
+    SENTRY_ENVIRONMENT: Optional[str] = Field(default=None)
+
+    CLICKHOUSE_DB: str
+    CLICKHOUSE_USER: str
+    CLICKHOUSE_PASSWORD: str
+    CLICKHOUSE_HOST: str
+    CLICKHOUSE_PORT: int = Field(default=8123)
 
     def __init__(self, *args, **kwargs):
         base_dir = Path(__file__).resolve(strict=True).parent.parent.parent
@@ -47,6 +56,7 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = ".env"
+        extra = "ignore"
 
 
 settings = Settings()

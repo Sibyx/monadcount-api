@@ -32,6 +32,15 @@ cp .env.example .env
 uvicorn main:app --reload
 ```
 
+## Command Line Interface (CLI)
+
+| Command                                            | Description                                                |
+|----------------------------------------------------|------------------------------------------------------------|
+| `python -m monadcount_api.cli import_measurements` | Import sniffer measurement file to PostgreSQL              |
+| `python -m monadcount_api.cli enqueue`             | Add all `pending` `UploadedFile` object to the tasks queue |
+| `python -m monadcount_api.cli openapi`             | Generates OpenAPI JSON Specification                       |
+
+
 ---
 Created with ❤️ using ☕️for my cute kawaii PhD thesis on FIIT STU
 

@@ -44,7 +44,9 @@ RUN chmod +x conf/entrypoint.sh
 RUN ln -sf /usr/share/zoneinfo/Europe/Bratislava /etc/localtime
 
 # Health check
-HEALTHCHECK CMD curl --fail http://localhost:8000/api/v1/status || exit 1
+# FIXME: find out how to adjust health check for both API and worker
+# I want to have a single image run with different CMD - in worker container HEALTHCHECK fails becouse there no API
+# HEALTHCHECK CMD curl --fail http://localhost:8000/api/v1/status || exit 1
 
 # Execution
 RUN chmod +x conf/entrypoint.sh

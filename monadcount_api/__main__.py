@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from sentry_sdk.integrations.dramatiq import DramatiqIntegration
 from starlette.staticfiles import StaticFiles
 
 from monadcount_api.core import settings
@@ -10,9 +11,7 @@ import sentry_sdk
 
 if settings.SENTRY_DSN:
     sentry_sdk.init(
-        dsn=settings.SENTRY_DSN,
-        traces_sample_rate=1.0,
-        profiles_sample_rate=1.0,
+        dsn=settings.SENTRY_DSN, traces_sample_rate=1.0, profiles_sample_rate=1.0, integrations=[DramatiqIntegration()]
     )
 
 

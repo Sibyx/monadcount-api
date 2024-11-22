@@ -1,28 +1,6 @@
 name: monadcount
 
 services:
-  api:
-    image: ghcr.io/sibyx/monadcount-api:master
-    depends_on:
-      timescaledb:
-        condition: service_healthy
-    environment:
-      PGHOST: timescaledb
-      PGUSER: postgres
-      PGPASSWORD: ${POSTGRES_PASSWORD}
-      PGDATABASE: monadcount
-      PGPORT: 5432
-      AUTH_USERNAME: ${AUTH_USERNAME}
-      AUTH_PASSWORD: ${AUTH_PASSWORD}
-      DATA_DIR: /var/monad
-      SENTRY_DSN: ${SENTRY_DSN}
-    volumes:
-      - monad-storage:/var/monad
-      - ./logs:/var/log
-    networks:
-      intranet:
-        ipv4_address: 172.28.1.2
-
   timescaledb:
     image: timescale/timescaledb-ha:pg16
     healthcheck:
@@ -31,11 +9,38 @@ services:
       timeout: 5s
       retries: 5
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: monadcount
+      POSTGRES_USER: ${PGUSER}
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+      POSTGRES_DB: ${PGDATABASE}
     volumes:
       - timescaledb-data:/home/postgres/pgdata/data
+    networks:
+      intranet:
+        ipv4_address: 172.28.10.1
+
+  redis:
+    image: "redis:7"
+    command: redis-server
+    volumes:
+      - redis-storage:/data
+    environment:
+      REDIS_REPLICATION_MODE: master
+    networks:
+      intranet:
+        ipv4_address: 172.28.10.2
+
+  clickhouse:
+    image: clickhouse/clickhouse-server
+    volumes:
+      - clickhouse-data:/var/lib/clickhouse/
+      - ./logs/clickhouse:/var/log/clickhouse-server/
+    environment:
+      - CLICKHOUSE_DB=${CLICKHOUSE_DB}
+      - CLICKHOUSE_USER=${CLICKHOUSE_USER}
+      - CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD}
+    ports:
+      - "8123:8123" # HTTP interface
+      - "8124:9000" # Native client
     networks:
       intranet:
         ipv4_address: 172.28.1.3
@@ -47,16 +52,62 @@ services:
     volumes:
       - grafana-storage:/var/lib/grafana
     environment:
-      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_USER}
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD}
     networks:
       intranet:
-        ipv4_address: 172.28.1.4
+        ipv4_address: 172.28.10.4
+
+  api:
+    image: ghcr.io/sibyx/monadcount-api:master
+    depends_on:
+      timescaledb:
+        condition: service_healthy
+    environment:
+      PGHOST: timescaledb
+      PGUSER: ${PGUSER}
+      PGPASSWORD: ${PGPASSWORD}
+      PGDATABASE: ${PGDATABASE}
+      PGPORT: 5432
+      AUTH_USERNAME: ${AUTH_USERNAME}
+      AUTH_PASSWORD: ${AUTH_PASSWORD}
+      DATA_DIR: /var/monad
+      SENTRY_DSN: ${SENTRY_DSN}
+      REDIS_URL: redis://172.28.10.2/0
+    volumes:
+      - monad-storage:/var/monad
+      - ./logs/api:/var/log
+    networks:
+      intranet:
+        ipv4_address: 172.28.20.1
+
+  worker:
+    image: ghcr.io/sibyx/monadcount-api:master
+    depends_on:
+      - redis
+      - clickhouse
+    environment:
+      PGHOST: timescaledb
+      PGUSER: ${PGUSER}
+      PGPASSWORD: ${PGPASSWORD}
+      PGDATABASE: ${PGDATABASE}
+      PGPORT: 5432
+      AUTH_USERNAME: ${AUTH_USERNAME}
+      AUTH_PASSWORD: ${AUTH_PASSWORD}
+      DATA_DIR: /var/monad
+      SENTRY_DSN: ${SENTRY_DSN}
+      REDIS_URL: redis://172.28.10.2/0
+    volumes:
+      - monad-storage:/var/monad
+      - ./logs:/var/log
+    command: /usr/local/bin/python3 -m dramatiq monadcount_api.tasks:create_broker monadcount_api.tasks
 
 volumes:
   timescaledb-data:
   grafana-storage:
   monad-storage:
+  redis-storage:
+  clickhouse-data:
 
 networks:
   intranet:
