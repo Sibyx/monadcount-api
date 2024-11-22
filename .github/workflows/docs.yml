@@ -36,6 +36,11 @@ jobs:
         DATA_DIR: /var/data
         AUTH_USERNAME: arthur.dent
         AUTH_PASSWORD: password
+        REDIS_URL: redis://127.0.0.1/0
+        CLICKHOUSE_DB: monadcount_api
+        CLICKHOUSE_USER: monad
+        CLICKHOUSE_PASSWORD: monad
+        CLICKHOUSE_HOST: 127.0.0.1
     - name: Build docs
       run: |
         npx @redocly/cli build-docs -o docs/index.html openapi.json
