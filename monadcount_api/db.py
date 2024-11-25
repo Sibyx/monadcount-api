@@ -1,7 +1,9 @@
 import json
+import uuid
 from enum import Enum
 from typing import Optional, Dict, List
 from datetime import datetime
+from uuid import UUID
 
 from fastapi.encoders import jsonable_encoder
 from geoalchemy2 import Geometry
@@ -79,3 +81,16 @@ class Measurement(SQLModel, table=True):
     additional_data: Optional[Dict] = Field(sa_column=Column(JSON))
 
     uploaded_file: Optional[UploadedFile] = Relationship(back_populates="measurements")
+
+
+class Structure(SQLModel, table=True):
+    __tablename__ = "structures"
+
+    class StructureType(str, Enum):
+        room = "room"
+        wall = "wall"
+
+    id: Optional[UUID] = Field(default=uuid.uuid4, primary_key=True)
+    category: StructureType
+    title: Optional[str]
+    geom: Optional[str] = Field(sa_column=Column(Geometry(geometry_type="POLYGON", srid=998999)))

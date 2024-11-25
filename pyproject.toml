@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "monadcount-api"
-version = "0.1.0"
+version = "0.2.0"
 description = "API Service for data collection from monadcount-sniffer"
 authors = ["Jakub Dubec <jakub.dubec@stuba.sk>"]
 license = "MIT"

@@ -2,6 +2,10 @@
 
 This changelog suppose to follow rules defined in the [changelog.md](https://changelog.md)
 
+## 0.2.0 - 2024-11-25
+
+- **Added**: `Structure` database table
+
 ## 0.1.0 - 2024-11-23 (Leibniz release)
 
 Initial release dedicated to the Gottfried Wilhelm Leibniz and his monadology which inspired the name of this project.
