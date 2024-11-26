@@ -2,9 +2,10 @@
 
 This changelog suppose to follow rules defined in the [changelog.md](https://changelog.md)
 
-## 0.2.0 - 2024-11-25
+## 0.2.0 - 2024-11-26
 
 - **Added**: `Structure` database table
+- **Added**: `UploadedFile.filesize` column with related CLI tools
 
 ## 0.1.0 - 2024-11-23 (Leibniz release)
 

@@ -64,6 +64,7 @@ class UploadedFile(SQLModel, table=True):
     version: int = Field(default=1)
     file_path: str
     happened_at: Optional[datetime] = Field(sa_column=Column(DateTime(timezone=True)), default=None)
+    filesize: Optional[int] = Field(default=None)
     additional_data: Optional[Dict] = Field(sa_column=Column(JSON))
     created_at: datetime = Field(sa_column=Column(DateTime(timezone=True)), default_factory=datetime.now)
 

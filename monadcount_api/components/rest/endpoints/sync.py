@@ -63,6 +63,7 @@ async def upload_file(
         happened_at=file.header.start_time,
         version=file.header.version,
         additional_data=file.header.model_dump(),
+        filesize=file.size,
     )
     session.add(uploaded_file)
     session.commit()

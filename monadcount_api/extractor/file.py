@@ -1,3 +1,4 @@
+import os
 import struct
 from pathlib import Path
 
@@ -14,6 +15,7 @@ class FileParser:
     def __init__(self, file_path: Path):
         self._file = open(file_path, "rb")
         self._file_path = file_path
+        self._file_stats = os.stat(file_path)
 
         file_header_size = struct.calcsize(self.FILE_HEADER_FORMAT)
         file_header_data = self._file.read(file_header_size)
@@ -35,6 +37,10 @@ class FileParser:
                 self._driver = L2PKv2(self.header.wifi_mac)
             case _:
                 self._driver = None
+
+    @property
+    def size(self) -> int:
+        return self._file_stats.st_size
 
     def __enter__(self):
         return self

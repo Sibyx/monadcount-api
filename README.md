@@ -46,3 +46,4 @@ Created with ❤️ using ☕️ for my cute kawaii PhD thesis on FIIT STU
 
 If you enjoy using this project, consider donating! Your donations will go towards therapy sessions because
 I'm an alcoholic and substance abuser and this is my cry for help. Cheers 🍻!
+
