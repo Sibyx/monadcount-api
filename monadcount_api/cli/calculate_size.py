@@ -18,7 +18,10 @@ def calculate_size():
 
         for uploaded_file in results:
             absolute_file_path = Path(os.path.join(settings.DATA_DIR, uploaded_file.file_path))
-            file = FileParser(absolute_file_path)
+            try:
+                file = FileParser(absolute_file_path)
+            except:
+                continue
 
             uploaded_file.filesize = file.size
             session.add(uploaded_file)
