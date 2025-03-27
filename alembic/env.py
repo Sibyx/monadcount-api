@@ -7,7 +7,8 @@ from sqlalchemy import pool
 from alembic import context
 from sqlmodel import SQLModel
 
-from monadcount_api.db import Device, Measurement
+import alembic_postgresql_enum
+
 from monadcount_api.core import settings
 
 # this is the Alembic Config object, which provides

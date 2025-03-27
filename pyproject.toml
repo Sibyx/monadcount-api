@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "monadcount-api"
-version = "0.2.0"
+version = "0.3.0"
 description = "API Service for data collection from monadcount-sniffer"
 authors = ["Jakub Dubec <jakub.dubec@stuba.sk>"]
 license = "MIT"
@@ -20,6 +20,7 @@ jinja2 = "^3.1.4"
 sentry-sdk = "^2.17.0"
 dramatiq = {version = "^1.17.1", extras = ["redis"]}
 clickhouse-connect = "^0.8.6"
+alembic-postgresql-enum = "^1.7.0"
 
 [tool.poetry.group.dev.dependencies]
 black = {version = "^24.10.0", extras = ["jupyter"]}

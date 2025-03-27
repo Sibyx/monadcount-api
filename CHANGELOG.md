@@ -2,6 +2,11 @@
 
 This changelog suppose to follow rules defined in the [changelog.md](https://changelog.md)
 
+## 0.3.0
+
+- **Added**: `Experiment` model introduced (to gather data also from simulations)
+- **Changed**: Migrating `enums`
+
 ## 0.2.0 - 2024-11-26
 
 - **Added**: `Structure` database table

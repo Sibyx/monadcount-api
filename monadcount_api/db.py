@@ -32,14 +32,33 @@ def get_db():
     finally:
         db.close()
 
+class Experiment(SQLModel, table=True):
+    __tablename__ = "experiments"
+
+    name: str = Field(primary_key=True)
+    description: Optional[str] = Field(default=None, nullable=True)
+    created_at: datetime = Field(sa_column=Column(DateTime(timezone=True)), default_factory=datetime.now)
+
+    devices: List["Device"] = Relationship(back_populates="experiment")
+    structures: List["Structure"] = Relationship(back_populates="structure")
+
 
 class Device(SQLModel, table=True):
     __tablename__ = "devices"
 
+    class DeviceType(str, Enum):
+        access_point = "access_point"
+        sniffer = "sniffer"
+        terminal = "terminal"
+
     mac_address: str = Field(primary_key=True)
+    experiment_id: str = Field(foreign_key="experiments.name")
+    type: DeviceType = Field(default=DeviceType.sniffer)
     geom: Optional[str] = Field(sa_column=Column(Geometry(geometry_type="POINT", srid=998999)))
+    description: Optional[str] = Field(default=None, nullable=True)
     last_seen: Optional[datetime] = Field(sa_column=Column(DateTime(timezone=True), nullable=True))
 
+    experiment: Optional[Experiment] = Relationship(back_populates="devices")
     uploaded_files: List["UploadedFile"] = Relationship(back_populates="device")
 
 
@@ -69,19 +88,6 @@ class UploadedFile(SQLModel, table=True):
     created_at: datetime = Field(sa_column=Column(DateTime(timezone=True)), default_factory=datetime.now)
 
     device: Optional[Device] = Relationship(back_populates="uploaded_files")
-    measurements: List["Measurement"] = Relationship(back_populates="uploaded_file")
-
-
-class Measurement(SQLModel, table=True):
-    __tablename__ = "measurements"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    device_id: str = Field(foreign_key="devices.mac_address")
-    uploaded_file_id: Optional[int] = Field(foreign_key="uploaded_files.id")
-    happened_at: datetime = Field(sa_column=Column(DateTime(timezone=True)))
-    additional_data: Optional[Dict] = Field(sa_column=Column(JSON))
-
-    uploaded_file: Optional[UploadedFile] = Relationship(back_populates="measurements")
 
 
 class Structure(SQLModel, table=True):
@@ -90,8 +96,14 @@ class Structure(SQLModel, table=True):
     class StructureType(str, Enum):
         room = "room"
         wall = "wall"
+        table = "table"
+        seat = "seat"
+        door = "door"
 
     id: Optional[UUID] = Field(default=uuid.uuid4, primary_key=True)
+    experiment_id: str = Field(foreign_key="experiments.name")
     category: StructureType
     title: Optional[str]
     geom: Optional[str] = Field(sa_column=Column(Geometry(geometry_type="POLYGON", srid=998999)))
+
+    experiment: Optional[Experiment] = Relationship(back_populates="structures")

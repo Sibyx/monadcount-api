@@ -1,8 +1,8 @@
 name: monadcount
 
 services:
-  timescaledb:
-    image: timescale/timescaledb-ha:pg16
+  postgresql:
+    image: postgis/postgis:17
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -13,7 +13,7 @@ services:
       POSTGRES_PASSWORD: ${PGPASSWORD}
       POSTGRES_DB: ${PGDATABASE}
     volumes:
-      - timescaledb-data:/home/postgres/pgdata/data
+      - postgresql-data:/var/lib/postgresql/data
     networks:
       intranet:
         ipv4_address: 172.28.10.1
@@ -48,7 +48,7 @@ services:
   grafana:
     image: grafana/grafana:latest
     depends_on:
-      - timescaledb
+      - postgresql
     volumes:
       - grafana-storage:/var/lib/grafana
     environment:
@@ -61,10 +61,10 @@ services:
   api:
     image: ghcr.io/sibyx/monadcount-api:master
     depends_on:
-      timescaledb:
+      postgresql:
         condition: service_healthy
     environment:
-      PGHOST: timescaledb
+      PGHOST: postgresql
       PGUSER: ${PGUSER}
       PGPASSWORD: ${PGPASSWORD}
       PGDATABASE: ${PGDATABASE}
@@ -106,7 +106,7 @@ services:
         ipv4_address: 172.28.20.2
 
 volumes:
-  timescaledb-data:
+  postgresql-data:
   grafana-storage:
   monad-storage:
   redis-storage:
