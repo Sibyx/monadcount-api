@@ -32,6 +32,7 @@ def get_db():
     finally:
         db.close()
 
+
 class Experiment(SQLModel, table=True):
     __tablename__ = "experiments"
 
