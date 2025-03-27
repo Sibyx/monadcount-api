@@ -21,6 +21,7 @@ sentry-sdk = "^2.24.1"
 dramatiq = {version = "^1.17.1", extras = ["redis"]}
 clickhouse-connect = "^0.8.6"
 alembic-postgresql-enum = "^1.7.0"
+pydantic-extra-types = "^2.10.3"
 
 [tool.poetry.group.dev.dependencies]
 black = {version = "^25.1", extras = ["jupyter"]}

@@ -3,7 +3,9 @@ import struct
 from datetime import datetime
 from typing import BinaryIO, Optional
 
-from monadcount_api.db import Measurement
+from pydantic_extra_types.mac_address import MacAddress
+
+from monadcount_api.extractor.schema import Measurement
 
 
 class L2PKv2:
@@ -22,7 +24,7 @@ class L2PKv2:
         payload = struct.unpack(self.BLOCK_FORMAT, packet_data)
 
         measurement = Measurement(
-            device_id=self._device_id,
+            mac_address=MacAddress(self._device_id),
             happened_at=datetime.fromtimestamp(payload[0] / 1000),
             additional_data={
                 "frame_type": payload[1],
